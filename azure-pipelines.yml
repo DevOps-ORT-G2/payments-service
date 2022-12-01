@@ -24,6 +24,18 @@ steps:
 #    echo See https://aka.ms/yaml
 #  displayName: 'Run a multi-line script'
 
+- task: Maven@4
+  displayName: Generar build del jar
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: false
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+
 ##########################################################
 # Realizamos análisis de código estático con SonarCloud
 ##########################################################
@@ -61,17 +73,7 @@ steps:
 #- script: mvn install
 #  displayName: Generar build del jar
 
-- task: Maven@4
-  displayName: Generar build del jar
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
+
 
 #################################################################################################
 # Previo a crear la imagen de docker
