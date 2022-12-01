@@ -149,6 +149,6 @@ steps:
 #    awsCredentials: 'AWS'
 #    regionName: 'us-east-1'
 #    imageSource: 'imagename'
-#    sourceImageName: 'products-service'
-#    repositoryName: 'products-service'
+#    sourceImageName: 'payments-service'
+#    repositoryName: 'payments-service'
     
