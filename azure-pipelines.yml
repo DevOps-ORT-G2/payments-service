@@ -159,6 +159,6 @@ steps:
     imageSource: 'imagename'
     sourceImageName: 'payments-service'
     repositoryName: 'micro-servicios'
-    pushTag: '3'
+    pushTag: 'payments-service:1'
     autoCreateRepository: true
     forceDockerNamingConventions: true
