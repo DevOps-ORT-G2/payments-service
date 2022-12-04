@@ -160,6 +160,6 @@ steps:
     imageSource: 'imagename'
     sourceImageName: 'payments-service'
     repositoryName: 'payments-service'
-    pushTag: '1'
+    pushTag: '2'
     autoCreateRepository: true
     forceDockerNamingConventions: true
