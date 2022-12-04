@@ -151,3 +151,14 @@ steps:
 #    sourceImageName: 'payments-service'
 #    repositoryName: 'payments-service'
     
+- task: ECRPushImage@1
+  displayName: Pushear imagen a ECR
+  inputs:
+    awsCredentials: 'AWS'
+    regionName: 'us-east-1'
+    imageSource: 'imageid'
+    sourceImageId: 'payments-service'
+    repositoryName: 'micro-servicios'
+    pushTag: '1'
+    autoCreateRepository: true
+    forceDockerNamingConventions: true
