@@ -150,7 +150,8 @@ steps:
 #    imageSource: 'imagename'
 #    sourceImageName: 'payments-service'
 #    repositoryName: 'payments-service'
-    
+
+
 - task: ECRPushImage@1
   displayName: Pushear imagen a ECR
   inputs:
@@ -158,7 +159,7 @@ steps:
     regionName: 'us-east-1'
     imageSource: 'imagename'
     sourceImageName: 'payments-service'
-    repositoryName: 'micro-servicios'
-    pushTag: 'payments-service:1'
+    repositoryName: 'payments-service'
+    pushTag: '1'
     autoCreateRepository: true
     forceDockerNamingConventions: true
