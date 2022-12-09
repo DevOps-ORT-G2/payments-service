@@ -16,14 +16,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-#- script: echo Hello, world!
-#  displayName: 'Run a one-line script'
-
-#- script: |
-#    echo Add other tasks to build, test, and deploy your project.
-#    echo See https://aka.ms/yaml
-#  displayName: 'Run a multi-line script'
-
+- checkout: self
+  persistCredentials: true
+  
 ##########################################################
 # Realizamos análisis de código estático con SonarCloud
 ##########################################################
@@ -133,24 +128,34 @@ steps:
 - script: docker run -t postman/newman:alpine run "https://api.postman.com/collections/7660732-2a6b5aa9-8221-4007-a2cc-a2a6480d9656?access_key=PMAT-01GK37EMFP081B2FQD0PCC8T2Y" 
   displayName: Ejecutar test Postman
 
-#- script: | 
-#    content=$(curl -L http://172.17.0.3/products/)
-#    echo $content
-#  displayName: prueba curl
+#########################################################################################
+# Actualizamos la versión de build
+#########################################################################################
 
+- script: | 
+    # borro directorios utilizados anteriormente para no agregarlos al repo
+    rm -rf ms-*
+    rm -rf nginx-conf
 
-    
+    git config --global user.email "diegodlrh@hotmail.com"
+    git config --global user.name "diegodlrh"
+    source .version/build
+
+    new_version=$(($version_build+1))
+    echo "version_build="$new_version > .version/build
+
+    # seteo variable para pder usar en task del push a ecr
+    echo "##vso[task.setvariable variable=tag_version]$new_version"
+    cat .version/build
+  
+    git add .
+    git commit -m "update version build [skip ci]"
+    git push origin HEAD:master 
+  displayName: Actualizar versión de build 
+
 ##########################################################
 # Pusheamos la imagen de docker al ECR
 ##########################################################
-#- task: ECRPushImage@1
-#  inputs:
-#    awsCredentials: 'AWS'
-#    regionName: 'us-east-1'
-#    imageSource: 'imagename'
-#    sourceImageName: 'payments-service'
-#    repositoryName: 'payments-service'
-
 
 - task: ECRPushImage@1
   displayName: Pushear imagen a ECR
@@ -160,6 +165,6 @@ steps:
     imageSource: 'imagename'
     sourceImageName: 'payments-service'
     repositoryName: 'payments-service'
-    pushTag: '2'
+    pushTag: $(tag_version)
     autoCreateRepository: true
     forceDockerNamingConventions: true
